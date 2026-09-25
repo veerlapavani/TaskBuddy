@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TaskBuddy - Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #121212;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: auto;
+            padding: 40px 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            font-size: 40px;
+            color: #f5c542;
+        }
+
+        .header p {
+            color: #aaa;
+            margin-top: 8px;
+        }
+
+        .add-task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .add-task h2 {
+            font-size: 25px;
+        }
+
+        .add-task a {
+            background: #f5c542;
+            color: #111;
+            padding: 12px 18px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .progress-box {
+            background: #1e1e1e;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .progress-box h2 {
+            margin-bottom: 10px;
+        }
+
+        .progress-box p {
+            color: #aaa;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #5bd675;
+            border-radius: 10px;
+        }
+
+        .task-card {
+            background: #1e1e1e;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+        }
+
+        .task-card h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .task-card p {
+            color: #bbb;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 13px;
+            margin-right: 8px;
+        }
+
+        .priority {
+            background: #3b3b3b;
+            color: #f5c542;
+        }
+
+        .category {
+            background: #292929;
+            color: #4da6ff;
+        }
+
+        .status {
+            margin-top: 15px;
+            color: #5bd675;
+            font-weight: bold;
+        }
+
+        .pending {
+            color: #f5c542;
+        }
+
+        .buttons {
+            margin-top: 18px;
+        }
+
+        .buttons a {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-right: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .complete-btn {
+            background: #5bd675;
+            color: #111;
+        }
+
+        .edit-btn {
+            background: #4da6ff;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #ff5c5c;
+            color: white;
+        }
+
+        .empty {
+            background: #1e1e1e;
+            padding: 30px;
+            text-align: center;
+            border-radius: 12px;
+            color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>TaskBuddy</h1>
+        <p>Your friendly Task Manager</p>
+    </div>
+
+
+    <!-- Add Task -->
+    <div class="add-task">
+
+        <h2>My Tasks</h2>
+
+        <a href="{% url 'create_task' %}">
+            + Add New Task
+        </a>
+
+    </div>
+
+
+    <!-- Progress -->
+    <div class="progress-box">
+
+        <h2>Task Progress</h2>
+
+        <p>
+            {{ completed_tasks }} out of {{ total_tasks }} tasks completed
+        </p>
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                style="width: {% if total_tasks > 0 %}{% widthratio completed_tasks total_tasks 100 %}{% else %}0{% endif %}%;">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Tasks -->
+
+    {% if tasks %}
+
+        {% for task in tasks %}
+
+        <div class="task-card">
+
+            <h3>{{ task.title }}</h3>
+
+            <p>
+                {{ task.description }}
+            </p>
+
+
+            <span class="badge priority">
+                Priority: {{ task.priority }}
+            </span>
+
+            <span class="badge category">
+                Category: {{ task.category }}
+            </span>
+
+
+            <!-- Status -->
+
+            {% if task.completed %}
+
+                <div class="status">
+                    ✓ Completed
+                </div>
+
+            {% else %}
+
+                <div class="status pending">
+                    ⏳ Pending
+                </div>
+
+            {% endif %}
+
+
+            <!-- Buttons -->
+
+            <div class="buttons">
+
+                {% if not task.completed %}
+
+                    <a
+                        href="{% url 'complete_task' task.id %}"
+                        class="complete-btn">
+                        Complete
+                    </a>
+
+                {% endif %}
+
+
+                <a
+                    href="{% url 'edit_task' task.id %}"
+                    class="edit-btn">
+                    Edit
+                </a>
+
+
+                <a
+                    href="{% url 'delete_task' task.id %}"
+                    class="delete-btn">
+                    Delete
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+
+    {% else %}
+
+        <div class="empty">
+            No tasks available.
+            Click "+ Add New Task" to create one.
+        </div>
+
+    {% endif %}
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TaskBuddy - Edit Task</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #121212;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: auto;
+            padding: 50px 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 38px;
+            color: #f5c542;
+        }
+
+        .header p {
+            color: #aaa;
+            margin-top: 8px;
+        }
+
+        .form-box {
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        .form-box h2 {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #444;
+            border-radius: 7px;
+            background: #2a2a2a;
+            color: white;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .update-btn {
+            width: 100%;
+            background: #4da6ff;
+            color: white;
+            border: none;
+            padding: 13px;
+            border-radius: 7px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .update-btn:hover {
+            background: #6bb7ff;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #aaa;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>TaskBuddy</h1>
+        <p>Your friendly Task Manager</p>
+    </div>
+
+    <div class="form-box">
+
+        <h2>Edit Task</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Task Title</label>
+            <input
+                type="text"
+                name="title"
+                value="{{ task.title }}"
+                required
+            >
+
+            <label>Description</label>
+            <textarea name="description">{{ task.description }}</textarea>
+
+            <label>Priority</label>
+
+<select name="priority">
+
+<option value="Low" {% if task.priority == "Low" %}selected{% endif %}>
+    Low
+</option>
+
+<option value="Medium" {% if task.priority == "Medium" %}selected{% endif %}>
+    Medium
+</option>
+
+<option value="High" {% if task.priority == "High" %}selected{% endif %}>
+    High
+</option>
+
+</select>
+
+            <label>Category</label>
+
+<select name="category">
+
+    <option value="General" {% if task.category == "General" %}selected{% endif %}>
+        General
+    </option>
+
+    <option value="Personal" {% if task.category == "Personal" %}selected{% endif %}>
+        Personal
+    </option>
+
+    <option value="Work" {% if task.category == "Work" %}selected{% endif %}>
+        Work
+    </option>
+
+    <option value="Study" {% if task.category == "Study" %}selected{% endif %}>
+        Study
+    </option>
+
+</select>
+
+            <button type="submit" class="update-btn">
+                Update Task
+            </button>
+
+        </form>
+
+        <a href="/" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
