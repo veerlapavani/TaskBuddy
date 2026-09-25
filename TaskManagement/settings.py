@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-w_%o%mnspfon4bt8jdg5_+fkkmp*kd2m*8q1@gf%o*9=x76ng@
 DEBUG = True
 
 
-ALLOWED_HOSTS = ["taskbuddy-pi.vercel.app", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [".vercel.app", "localhost", "127.0.0.1"]
 
 # Application definition
 
